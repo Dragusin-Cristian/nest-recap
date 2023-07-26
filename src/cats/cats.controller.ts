@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Session,
+  // UseInterceptors,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -15,9 +16,13 @@ import { UpdateCatDto } from './dto/update-cat.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { CatDto } from './dto/cat.dto';
 import { AuthService } from './auth.service';
+import { Cat } from './entities/cat.entity';
+import { CurrentCat } from './decorators/current-cat.decorator';
+// import { CurrentCatInterceptor } from './interceptors/current-cat.interceptor';
 
 @Controller('cats')
 @Serialize(CatDto)
+// @UseInterceptors(CurrentCatInterceptor)
 export class CatsController {
   constructor(
     private readonly catsService: CatsService,
@@ -35,9 +40,11 @@ export class CatsController {
     return cat;
   }
 
+  //* The order of execution is: interceptor => decorator => req. handler
+  //* if we woudn't use a decorator, but an interceptor straight away, we end up with more code here, and can be more code repeating.
   @Get('/whoami')
-  whoami(@Session() session: any) {
-    return this.catsService.findOne(session.catId);
+  whoami(@CurrentCat() cat: Cat) {
+    return cat;
   }
 
   @Post('/signin')

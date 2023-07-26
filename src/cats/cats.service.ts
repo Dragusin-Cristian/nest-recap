@@ -1,20 +1,15 @@
 import { HttpStatus, Injectable, Param, ParseIntPipe } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
-import { CatsRepository } from './cats.repository';
 
-@Injectable() //* this is for DI Container
+@Injectable()
 export class CatsService {
-  constructor(public catsRepository: CatsRepository) {
-    // this.catsRepository = new CatsRepository(); //* this is bad becasue it doesn't respect the inversion of control principle.
-  }
-
   create(createCatDto: CreateCatDto) {
-    return this.catsRepository.create(createCatDto.name);
+    return 'This action adds a new cat';
   }
 
   findAll() {
-    return this.catsRepository.findAll();
+    return `This action returns all cats`;
   }
 
   findOne(
@@ -25,7 +20,7 @@ export class CatsService {
     id: number,
   ) {
     // or just ParseIntPipe
-    return this.catsRepository.findOne(id);
+    return 'This action finds one cat';
   }
 
   update(id: number, updateCatDto: UpdateCatDto) {

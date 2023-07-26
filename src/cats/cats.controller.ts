@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Session,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -24,17 +25,31 @@ export class CatsController {
   ) {}
 
   @Post('/signup')
-  create(@Body() createCatDto: CreateCatDto) {
-    return this.authService.signup(
+  async create(@Body() createCatDto: CreateCatDto, @Session() session: any) {
+    const cat = await this.authService.signup(
       createCatDto.name,
       createCatDto.breed,
       createCatDto.password,
     );
+    session.catId = cat.id;
+    return cat;
+  }
+
+  @Get('/whoami')
+  whoami(@Session() session: any) {
+    return this.catsService.findOne(session.catId);
   }
 
   @Post('/signin')
-  signin(@Body() body: Partial<CreateCatDto>) {
-    return this.authService.signin(body.name, body.password);
+  async signin(@Body() body: Partial<CreateCatDto>, @Session() session: any) {
+    const cat = await this.authService.signin(body.name, body.password);
+    session.catId = cat.id; //* cookie is the same as from signup, because we didn't change anything in the db
+    return cat;
+  }
+
+  @Post('/signout')
+  signout(@Session() session: any) {
+    session.catId = null;
   }
 
   @Get()

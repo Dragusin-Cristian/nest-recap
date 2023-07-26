@@ -16,7 +16,7 @@ export class AuthService {
   async signup(name: string, breed: string, password: string) {
     const cats = await this.catsService.findByName(name);
     if (cats.length) {
-      return new BadRequestException('cat already exists');
+      throw new BadRequestException('cat already exists');
     }
 
     const salt = randomBytes(8).toString('hex');

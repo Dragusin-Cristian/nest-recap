@@ -37,11 +37,13 @@ export class CatsService {
   findOne(
     @Param(
       'id',
-      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }), // or just ParseIntPipe
     )
     id: number,
   ) {
-    // or just ParseIntPipe
+    if (!id) {
+      return null;
+    }
     return this.repo.findOneBy({ id });
   }
 

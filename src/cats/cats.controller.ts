@@ -13,15 +13,28 @@ import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { CatDto } from './dto/cat.dto';
+import { AuthService } from './auth.service';
 
 @Controller('cats')
 @Serialize(CatDto)
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+  constructor(
+    private readonly catsService: CatsService,
+    private readonly authService: AuthService,
+  ) {}
 
-  @Post()
+  @Post('/signup')
   create(@Body() createCatDto: CreateCatDto) {
-    return this.catsService.create(createCatDto);
+    return this.authService.signup(
+      createCatDto.name,
+      createCatDto.breed,
+      createCatDto.password,
+    );
+  }
+
+  @Post('/signin')
+  signin(@Body() body: Partial<CreateCatDto>) {
+    return this.authService.signin(body.name, body.password);
   }
 
   @Get()

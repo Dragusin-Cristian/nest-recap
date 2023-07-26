@@ -30,6 +30,10 @@ export class CatsService {
     return this.repo.find();
   }
 
+  findByName(name: string) {
+    return this.repo.find({ where: { name } });
+  }
+
   findOne(
     @Param(
       'id',

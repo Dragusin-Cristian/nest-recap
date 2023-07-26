@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, Param, ParseIntPipe } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 
@@ -12,7 +12,14 @@ export class CatsService {
     return `This action returns all cats`;
   }
 
-  findOne(id: number) {
+  findOne(
+    @Param(
+      'id',
+      new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
+    )
+    id: number,
+  ) {
+    // or just ParseIntPipe
     return `This action returns a #${id} cat`;
   }
 

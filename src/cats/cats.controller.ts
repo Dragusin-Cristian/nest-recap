@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -18,6 +19,11 @@ export class CatsController {
   @Post()
   create(@Body() createCatDto: CreateCatDto) {
     return this.catsService.create(createCatDto);
+  }
+
+  @Get()
+  find(@Query('breed') breed: string) {
+    return this.catsService.find(breed);
   }
 
   @Get()
@@ -37,6 +43,6 @@ export class CatsController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.catsService.remove(+id);
+    return this.catsService.remove(parseInt(id));
   }
 }

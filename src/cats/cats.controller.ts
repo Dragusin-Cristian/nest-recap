@@ -11,8 +11,11 @@ import {
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { CatDto } from './dto/cat.dto';
 
 @Controller('cats')
+@Serialize(CatDto)
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
@@ -33,6 +36,7 @@ export class CatsController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    console.log('handler is running');
     return this.catsService.findOne(+id);
   }
 

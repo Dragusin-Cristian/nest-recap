@@ -20,6 +20,7 @@ export class CatsService {
     const cat = this.repo.create({
       name: createCatDto.name,
       breed: createCatDto.breed,
+      password: createCatDto.password,
     });
 
     return this.repo.save(cat);

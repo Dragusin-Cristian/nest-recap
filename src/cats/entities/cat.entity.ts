@@ -6,6 +6,7 @@ import {
   AfterRemove,
   AfterUpdate,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Cat {
@@ -17,6 +18,10 @@ export class Cat {
 
   @Column()
   breed: string;
+
+  @Column()
+  @Exclude()
+  password: string;
 
   @AfterInsert()
   logInsert() {

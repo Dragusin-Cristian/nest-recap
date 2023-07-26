@@ -6,4 +6,7 @@ export class CreateCatDto {
 
   @IsString()
   breed: string;
+
+  @IsString()
+  password: string;
 }

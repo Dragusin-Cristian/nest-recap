@@ -9,6 +9,7 @@ import {
   Query,
   Session,
   // UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -19,6 +20,7 @@ import { AuthService } from './auth.service';
 import { Cat } from './entities/cat.entity';
 import { CurrentCat } from './decorators/current-cat.decorator';
 // import { CurrentCatInterceptor } from './interceptors/current-cat.interceptor';
+import { AuthGuard } from 'src/guards/auth-guard';
 
 @Controller('cats')
 @Serialize(CatDto)
@@ -43,6 +45,7 @@ export class CatsController {
   //* The order of execution is: interceptor => decorator => req. handler
   //* if we woudn't use a decorator, but an interceptor straight away, we end up with more code here, and can be more code repeating.
   @Get('/whoami')
+  @UseGuards(AuthGuard)
   whoami(@CurrentCat() cat: Cat) {
     return cat;
   }

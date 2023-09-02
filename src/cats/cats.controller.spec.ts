@@ -27,7 +27,9 @@ describe('CatsController', () => {
     };
     fakeAuthService = {
       // signup: () => {},
-      // signin: () => {},
+      signin: (name: string, password: string) => {
+        return Promise.resolve({ id: 1, name, password } as Cat);
+      },
     };
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CatsController],
@@ -65,5 +67,16 @@ describe('CatsController', () => {
     fakeCatsService.findOne = (id: number) => null;
     const cat = controller.findOne('1');
     expect(cat).toBeNull();
+  });
+
+  it('signin updates session and returns cat', async () => {
+    const session: { catId?: number } = {};
+    const cat = await controller.signin(
+      { name: 'Criss', password: 'asdf' },
+      session,
+    );
+
+    expect(cat.id).toEqual(1);
+    expect(session.catId).toEqual(cat.id);
   });
 });

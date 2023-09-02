@@ -4,10 +4,6 @@ import { CatsService } from './cats.service';
 import { Cat } from './entities/cat.entity';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { randomBytes, scrypt as _scrypt } from 'crypto';
-import { promisify } from 'util';
-
-const scrypt = promisify(_scrypt);
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -87,5 +83,12 @@ describe('AuthService', () => {
 
     const user = await service.signin('Criss', 'pass');
     expect(user).toBeDefined();
+  });
+
+  it('throws if signup is called with an used name', async () => {
+    await service.signup('Criss', 'regal', 'pass');
+    await expect(service.signup('Criss', 'regal', 'pass')).rejects.toThrow(
+      BadRequestException,
+    );
   });
 });

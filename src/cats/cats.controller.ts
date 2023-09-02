@@ -14,13 +14,13 @@ import {
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize.interceptor';
 import { CatDto } from './dto/cat.dto';
 import { AuthService } from './auth.service';
 import { Cat } from './entities/cat.entity';
 import { CurrentCat } from './decorators/current-cat.decorator';
 // import { CurrentCatInterceptor } from './interceptors/current-cat.interceptor';
-import { AuthGuard } from 'src/guards/auth-guard';
+import { AuthGuard } from '../guards/auth-guard';
 
 @Controller('cats')
 @Serialize(CatDto)

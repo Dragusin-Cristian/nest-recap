@@ -14,17 +14,24 @@ describe('AuthService', () => {
   let fakeCatsService: Partial<CatsService>;
 
   beforeEach(async () => {
+    const cats: Cat[] = [];
     // Create a fake copy of users service, (so we don't use the actual repository):
     fakeCatsService = {
       find: () => Promise.resolve([]),
-      create: (newCat: CreateCatDto) =>
-        Promise.resolve({
-          id: 1,
+      create: (newCat: CreateCatDto) => {
+        const cat = {
+          id: cats.length * Math.floor(Math.random() * 999),
           name: newCat.name,
           breed: newCat.breed,
           password: newCat.password,
-        } as Cat),
-      findByName: (name: string) => Promise.resolve([]),
+        } as Cat;
+        cats.push(cat);
+        return Promise.resolve(cat);
+      },
+      findByName: (name: string) => {
+        const filteredCats = cats.filter((cat: Cat) => cat.name === name);
+        return Promise.resolve(filteredCats);
+      },
     };
 
     const module = await Test.createTestingModule({
@@ -68,17 +75,7 @@ describe('AuthService', () => {
   });
 
   it('throws if an invalid password is provided', async () => {
-    const salt = randomBytes(8).toString('hex');
-    const hash = (await scrypt('pass', salt, 32)) as Buffer;
-    fakeCatsService.findByName = (name: string) =>
-      Promise.resolve([
-        {
-          id: 1,
-          name: 'Criss',
-          breed: 'regal',
-          password: salt + '.' + hash.toString('hex'),
-        } as Cat,
-      ]);
+    await service.signup('Criss', 'regal', 'pass');
 
     await expect(service.signin('Criss', 'some wrong pass')).rejects.toThrow(
       BadRequestException,
@@ -86,17 +83,7 @@ describe('AuthService', () => {
   });
 
   it('returns a user if a correct pass is provided', async () => {
-    const salt = randomBytes(8).toString('hex');
-    const hash = (await scrypt('pass', salt, 32)) as Buffer;
-    fakeCatsService.findByName = (name: string) =>
-      Promise.resolve([
-        {
-          id: 1,
-          name: 'Criss',
-          breed: 'regal',
-          password: salt + '.' + hash.toString('hex'),
-        } as Cat,
-      ]);
+    await service.signup('Criss', 'regal', 'pass');
 
     const user = await service.signin('Criss', 'pass');
     expect(user).toBeDefined();

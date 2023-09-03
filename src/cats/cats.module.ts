@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Cat } from './entities/cat.entity';
 import { AuthService } from './auth.service';
 import { CurrentCatInterceptor } from './interceptors/current-cat.interceptor';
-import { LoggerMiddleware } from 'src/middleware/logger.middleware';
+import { LoggerMiddleware } from '../middleware/logger.middleware';
 
 @Module({
   controllers: [CatsController],

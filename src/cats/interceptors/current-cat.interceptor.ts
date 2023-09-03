@@ -15,10 +15,10 @@ export class CurrentCatInterceptor implements NestInterceptor {
     next: CallHandler<any>,
   ): Promise<Observable<any>> {
     const request = context.switchToHttp().getRequest();
-    const catId = request.session || {};
+    const catSession = request.session || {};
 
-    if (catId) {
-      const cat = await this.catsService.findOne(catId);
+    if (catSession) {
+      const cat = await this.catsService.findOne(catSession.catId);
       request.currentCat = cat;
     }
 

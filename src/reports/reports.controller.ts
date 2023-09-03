@@ -1,9 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Get,
+  Session,
+} from '@nestjs/common';
+import { CreateReportDto } from './dto/create-report.dto';
+import { ReportsService } from './reports.service';
+import { AuthGuard } from '../guards/auth-guard';
 
 @Controller('reports')
 export class ReportsController {
-  @Get()
-  getHello() {
-    return 'Hello';
+  constructor(private reportsService: ReportsService) {}
+
+  @Post()
+  @UseGuards(AuthGuard)
+  createReport(@Body() body: CreateReportDto) {
+    return this.reportsService.create(body);
   }
 }

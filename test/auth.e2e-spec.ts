@@ -33,4 +33,25 @@ describe('Authentication System (e2e)', () => {
         expect(breed).toEqual(defBbreed);
       });
   });
+
+  it('signup as a new cat then get the currently logged cat', async () => {
+    const name = 'Cristi';
+    const password = 'asdf';
+    const breed = 'regal';
+
+    const res = await request(app.getHttpServer())
+      .post('/cats/signup')
+      .send({ name, password, breed })
+      .expect(201);
+
+    const cookie = res.get('Set-Cookie');
+
+    const { body } = await request(app.getHttpServer())
+      .get('/cats/whoami')
+      .set('Cookie', cookie)
+      .expect(200);
+
+    expect(body.name).toEqual(name);
+    expect(body.breed).toEqual(breed);
+  });
 });

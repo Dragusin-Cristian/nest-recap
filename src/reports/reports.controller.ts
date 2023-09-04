@@ -1,14 +1,9 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UseGuards,
-  Get,
-  Session,
-} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
 import { ReportsService } from './reports.service';
 import { AuthGuard } from '../guards/auth-guard';
+import { CurrentCat } from 'src/cats/decorators/current-cat.decorator';
+import { Cat } from 'src/cats/entities/cat.entity';
 
 @Controller('reports')
 export class ReportsController {
@@ -16,7 +11,7 @@ export class ReportsController {
 
   @Post()
   @UseGuards(AuthGuard)
-  createReport(@Body() body: CreateReportDto) {
-    return this.reportsService.create(body);
+  createReport(@Body() body: CreateReportDto, @CurrentCat() cat: Cat) {
+    return this.reportsService.create(body, cat);
   }
 }

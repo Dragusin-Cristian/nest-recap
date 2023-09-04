@@ -4,6 +4,8 @@ import { ReportsService } from './reports.service';
 import { AuthGuard } from '../guards/auth-guard';
 import { CurrentCat } from 'src/cats/decorators/current-cat.decorator';
 import { Cat } from 'src/cats/entities/cat.entity';
+import { ReportDto } from './dto/report.dto';
+import { Serialize } from 'src/interceptors/serialize.interceptor';
 
 @Controller('reports')
 export class ReportsController {
@@ -11,6 +13,7 @@ export class ReportsController {
 
   @Post()
   @UseGuards(AuthGuard)
+  @Serialize(ReportDto)
   createReport(@Body() body: CreateReportDto, @CurrentCat() cat: Cat) {
     return this.reportsService.create(body, cat);
   }

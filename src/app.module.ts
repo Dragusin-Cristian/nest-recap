@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { CatsModule } from './cats/cats.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Cat } from './cats/entities/cat.entity';
+import { Report } from './reports/report.entity';
+import { ReportsModule } from './reports/reports.module';
 import { SqlInMemory } from 'typeorm/driver/SqlInMemory';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const cookieSession = require('cookie-session');
@@ -17,6 +19,7 @@ const cookieSession = require('cookie-session');
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     CatsModule,
+    ReportsModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
@@ -24,7 +27,7 @@ const cookieSession = require('cookie-session');
           type: 'sqlite',
           database: config.get<string>('DB_NAME'),
           synchronize: true,
-          entities: [Cat],
+          entities: [Cat, Report],
         };
       },
     }),
@@ -54,6 +57,6 @@ export class AppModule {
           keys: ['some secret token key'],
         }),
       )
-      .forRoutes('cats/');
+      .forRoutes('cats/', 'reports/');
   }
 }

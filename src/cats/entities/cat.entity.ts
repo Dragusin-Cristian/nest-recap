@@ -25,6 +25,9 @@ export class Cat {
   @Exclude()
   password: string;
 
+  @Column({ default: true })
+  admin: boolean;
+
   //* because of circular dependency, we have to wrap the types in functions:
   @OneToMany(() => Report, (report) => report.cat)
   reports: Report[];

@@ -6,6 +6,7 @@ const dataSourceOptionsP: Partial<DataSourceOptions> = {
 
 switch (process.env.NODE_ENV) {
   case 'development':
+  case 'production':
     Object.assign(dataSourceOptionsP, {
       type: 'sqlite',
       database: 'db.sqlite',
@@ -22,17 +23,18 @@ switch (process.env.NODE_ENV) {
       migrationsRun: true,
     });
     break;
-  case 'production':
-    Object.assign(dataSourceOptionsP, {
-      type: 'postgres',
-      url: process.env.POSTGRESQL_INTERNAL_DB_URL,
-      migrationsRun: true,
-      entities: ['**/*.entity.js'],
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    });
-    break;
+  // case 'production':
+  // Object.assign(dataSourceOptionsP, {
+  //   type: 'postgres',
+  //   url: process.env.POSTGRESQL_EXTERNAL_DB_URL,
+  //   password: process.env.POSTGRESQL_PASSWORD,
+  //   migrationsRun: true,
+  //   entities: ['**/*.entity.js'],
+  //   ssl: {
+  //     rejectUnauthorized: false,
+  //   },
+  // });
+  // break;
   default:
     throw new Error('unknown environment');
 }

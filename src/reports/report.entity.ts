@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Cat } from 'src/cats/entities/cat.entity';
+import { Cat } from '../cats/entities/cat.entity';
 
 @Entity()
 export class Report {

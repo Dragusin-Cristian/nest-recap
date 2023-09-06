@@ -11,12 +11,12 @@ import {
 import { CreateReportDto } from './dto/create-report.dto';
 import { ReportsService } from './reports.service';
 import { AuthGuard } from '../guards/auth-guard';
-import { CurrentCat } from 'src/cats/decorators/current-cat.decorator';
-import { Cat } from 'src/cats/entities/cat.entity';
+import { CurrentCat } from '../cats/decorators/current-cat.decorator';
+import { Cat } from '../cats/entities/cat.entity';
 import { ReportDto } from './dto/report.dto';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { Serialize } from '../interceptors/serialize.interceptor';
 import { ApproveReportDto } from './dto/approve-report.dto';
-import { AdminGuard } from 'src/guards/admin-guard';
+import { AdminGuard } from '../guards/admin-guard';
 import { GetEstimateDto } from './dto/get-estimate.dto';
 
 @Controller('reports')

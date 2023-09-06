@@ -15,7 +15,7 @@ describe('Authentication System (e2e)', () => {
     await app.init();
   });
 
-  it('handles a signup request', () => {
+  it('handles a signup request', async () => {
     const defName = 'Criss';
     const defBbreed = 'regal';
     return request(app.getHttpServer())
